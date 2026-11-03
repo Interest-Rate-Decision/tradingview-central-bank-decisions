@@ -1,0 +1,12 @@
+{
+ "asOf": "2026-11-01T12:00:00.000Z",
+ "source": "https://interestratedecision.com/about/",
+ "licence": "Free to reuse with a link to https://interestratedecision.com",
+ "decisions": [
+  { "bank": "boe", "name": "Bank of England", "short": "BoE", "rateName": "Bank Rate", "range": false, "t": "2026-11-05T12:00:00.000Z", "tentative": false, "pressConference": null, "projections": true, "rateBefore": 3.75, "path": "/boe/november-2026/", "page": "https://interestratedecision.com/boe/november-2026/" },
+  { "bank": "fed", "name": "Federal Reserve", "short": "Fed", "rateName": "federal funds rate", "range": true, "t": "2026-12-09T19:00:00.000Z", "tentative": false, "pressConference": null, "projections": true, "rateBefore": 4, "path": "/fed/december-2026/", "page": "https://interestratedecision.com/fed/december-2026/" },
+  { "bank": "boj", "name": "Bank of Japan", "short": "BoJ", "rateName": "policy rate", "range": false, "t": "2026-12-18T03:00:00.000Z", "tentative": true, "pressConference": null, "projections": false, "rateBefore": 1.25, "path": "/boj/december-2026/", "page": "https://interestratedecision.com/boj/december-2026/" },
+  { "bank": "fed", "name": "Federal Reserve", "short": "Fed", "rateName": "federal funds rate", "range": true, "t": "2026-10-28T18:00:00.000Z", "tentative": false, "pressConference": null, "projections": false, "rateBefore": 4, "path": "/fed/october-2026/", "page": "https://interestratedecision.com/fed/october-2026/" }
+ ],
+ "justDecided": []
+}

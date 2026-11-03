@@ -1,0 +1,13 @@
+{
+  "name": "tradingview-central-bank-decisions",
+  "private": true,
+  "description": "Generator of the Central Bank Decisions indicator for TradingView, from InterestRateDecision.com's open data",
+  "type": "module",
+  "license": "MIT",
+  "engines": { "node": ">=18" },
+  "scripts": {
+    "generate": "node scripts/generate.mjs",
+    "check": "node scripts/generate.mjs --check",
+    "test": "node --test tests/generate.test.mjs"
+  }
+}

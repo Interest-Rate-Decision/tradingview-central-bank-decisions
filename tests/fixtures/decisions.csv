@@ -1,0 +1,16 @@
+bank,bank_name,time_utc,date,rate,change_bp
+fed,Federal Reserve,2019-12-11T19:00:00.000Z,2019-12-11,1.75,0
+fed,Federal Reserve,2020-03-03T15:00:00.000Z,2020-03-03,1.25,-50
+fed,Federal Reserve,2026-09-16T18:00:00.000Z,2026-09-16,4,25
+fed,Federal Reserve,2026-10-28T18:00:00.000Z,2026-10-28,4,0
+ecb,European Central Bank,2015-01-22T12:45:00.000Z,2015-01-22,,0
+ecb,European Central Bank,2026-10-29T13:15:00.000Z,2026-10-29,2.5,0
+boe,Bank of England,2026-09-17T11:00:00.000Z,2026-09-17,3.75,0
+boj,Bank of Japan,2026-10-30T03:00:00.000Z,2026-10-30,1.25,0
+boc,Bank of Canada,2026-10-28T13:45:00.000Z,2026-10-28,2.5,-25
+rba,Reserve Bank of Australia,2026-09-29T04:30:00.000Z,2026-09-29,4.6,25
+rbnz,Reserve Bank of New Zealand,2026-10-07T01:00:00.000Z,2026-10-07,2.75,0
+snb,Swiss National Bank,2026-09-24T07:30:00.000Z,2026-09-24,0,0
+norges,Norges Bank,2026-09-24T08:00:00.000Z,2026-09-24,4.5,0
+riksbank,Sveriges Riksbank,2026-09-24T07:30:00.000Z,2026-09-24,1.75,0
+rbi,Reserve Bank of India,2026-10-01T04:30:00.000Z,2026-10-01,5.5,0

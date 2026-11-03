@@ -1,0 +1,255 @@
+// This Pine Script code is subject to the terms of the MIT License.
+// Central Bank Decisions: the interest rate decisions of the banks behind the
+// chart's two currencies. Past decisions with their result (hike, hold or cut
+// and the new rate), the next ones with a countdown.
+//
+// Pine Script cannot fetch data, so the decisions are written into this script.
+// They are regenerated from the open data of the central banks' announcements
+// and the script is republished each month. History starts on 1 January of
+// FIRST_YEAR. Rates are in per cent; the Federal Reserve's is its target range.
+//
+// Do not edit the block between the GENERATED lines by hand: it is rewritten.
+
+//@version=6
+indicator("Central Bank Decisions", shorttitle = "CB Decisions", overlay = true, max_labels_count = 500, max_lines_count = 500)
+
+// ---- GENERATED: start ----
+{{DATA}}
+// ---- GENERATED: end ----
+
+// ---- Inputs ----
+const string MODE_CHART = "The chart's two currencies"
+const string MODE_ALL = "Every bank ticked below"
+const string G_BANKS = "Banks"
+const string G_SHOW = "What to show"
+const string G_COL = "Colours"
+
+string modeIn = input.string(MODE_CHART, "Banks to show", options = [MODE_CHART, MODE_ALL], group = G_BANKS, tooltip = "The chart's two currencies: on EURUSD the ECB and the Fed, on XAUUSD the Fed only. The ticks below can switch a bank off in either mode.")
+bool onFed = input.bool(true, "Federal Reserve (USD)", group = G_BANKS)
+bool onEcb = input.bool(true, "European Central Bank (EUR)", group = G_BANKS)
+bool onBoe = input.bool(true, "Bank of England (GBP)", group = G_BANKS)
+bool onBoj = input.bool(true, "Bank of Japan (JPY)", group = G_BANKS)
+bool onBoc = input.bool(true, "Bank of Canada (CAD)", group = G_BANKS)
+bool onRba = input.bool(true, "Reserve Bank of Australia (AUD)", group = G_BANKS)
+bool onRbnz = input.bool(true, "Reserve Bank of New Zealand (NZD)", group = G_BANKS)
+bool onSnb = input.bool(true, "Swiss National Bank (CHF)", group = G_BANKS)
+bool onNorges = input.bool(true, "Norges Bank (NOK)", group = G_BANKS)
+bool onRiks = input.bool(true, "Sveriges Riksbank (SEK)", group = G_BANKS)
+
+int yearsIn = input.int(3, "Past years of decisions", minval = 0, maxval = MAX_YEARS, group = G_SHOW, tooltip = "0 shows only the decisions to come. The data in this script starts on " + DATA_FROM + ".")
+bool showNext = input.bool(true, "Decisions to come, with a countdown", group = G_SHOW)
+int nextPerBank = input.int(2, "Decisions to come per bank", minval = 1, maxval = 12, group = G_SHOW)
+bool showLines = input.bool(true, "Vertical line at each decision", group = G_SHOW)
+bool showTable = input.bool(true, "Table of the next decisions", group = G_SHOW)
+string tablePosIn = input.string("Top right", "Table position", options = ["Top right", "Bottom right", "Bottom left", "Top left"], group = G_SHOW)
+string sizeIn = input.string("Small", "Label size", options = ["Tiny", "Small", "Normal"], group = G_SHOW)
+
+color colHike = input.color(#e5534b, "Hike", group = G_COL)
+color colCut = input.color(#2f81f7, "Cut", group = G_COL)
+color colHold = input.color(#768390, "Hold", group = G_COL)
+color colNext = input.color(#d29922, "To come", group = G_COL)
+color colText = input.color(color.white, "Label text", group = G_COL)
+
+// ---- Banks (the order of the generator's BANKS) ----
+var array<string> BANK_SHORT = array.from("Fed", "ECB", "BoE", "BoJ", "BoC", "RBA", "RBNZ", "SNB", "Norges Bank", "Riksbank")
+var array<string> BANK_NAME = array.from("Federal Reserve", "European Central Bank", "Bank of England", "Bank of Japan", "Bank of Canada", "Reserve Bank of Australia", "Reserve Bank of New Zealand", "Swiss National Bank", "Norges Bank", "Sveriges Riksbank")
+var array<string> BANK_CCY = array.from("USD", "EUR", "GBP", "JPY", "CAD", "AUD", "NZD", "CHF", "NOK", "SEK")
+var array<string> BANK_DATA = array.from(D_FED, D_ECB, D_BOE, D_BOJ, D_BOC, D_RBA, D_RBNZ, D_SNB, D_NORGES, D_RIKSBANK)
+const int N_BANKS = 10
+
+ticked(int i) =>
+    switch i
+        0 => onFed
+        1 => onEcb
+        2 => onBoe
+        3 => onBoj
+        4 => onBoc
+        5 => onRba
+        6 => onRbnz
+        7 => onSnb
+        8 => onNorges
+        => onRiks
+
+onChart(int i) =>
+    string c = BANK_CCY.get(i)
+    c == syminfo.basecurrency or c == syminfo.currency
+
+bankShown(int i) =>
+    ticked(i) and (modeIn == MODE_ALL or onChart(i))
+
+// The base currency's bank is marked above the bars, the quote currency's below.
+isAbove(int i) =>
+    not (BANK_CCY.get(i) == syminfo.currency and BANK_CCY.get(i) != syminfo.basecurrency)
+
+fmtRate(float r, int i) =>
+    string s = ""
+    if not na(r)
+        s := i == 0 ? str.tostring(r - 0.25, "0.00") + "-" + str.tostring(r, "0.00") + "%" : str.tostring(r, "0.00") + "%"
+    s
+
+countdown(int ms) =>
+    int mins = math.max(0, math.floor(ms / 60000))
+    int d = math.floor(mins / 1440)
+    int h = math.floor((mins % 1440) / 60)
+    int m = mins % 60
+    d > 0 ? "in " + str.tostring(d) + "d " + str.tostring(h) + "h" : h > 0 ? "in " + str.tostring(h) + "h " + str.tostring(m) + "m" : "in " + str.tostring(m) + "m"
+
+fmtUtc(int t) =>
+    str.format_time(t, "yyyy-MM-dd HH:mm", "UTC") + " UTC"
+
+labelSize() =>
+    switch sizeIn
+        "Tiny" => size.tiny
+        "Normal" => size.normal
+        => size.small
+
+tablePos() =>
+    switch tablePosIn
+        "Bottom right" => position.bottom_right
+        "Bottom left" => position.bottom_left
+        "Top left" => position.top_left
+        => position.top_right
+
+// ---- The decisions of the banks shown, read once ----
+var array<int> evT = array.new<int>()
+var array<int> evBank = array.new<int>()
+var array<string> evKind = array.new<string>()
+var array<float> evRate = array.new<float>()
+var array<float> evChg = array.new<float>()
+var array<int> sorted = array.new<int>()
+var int ptr = 0
+
+if barstate.isfirst
+    for i = 0 to N_BANKS - 1
+        if bankShown(i)
+            for rec in str.split(BANK_DATA.get(i), ";")
+                array<string> f = str.split(rec, ",")
+                if f.size() >= 3
+                    evKind.push(f.get(0))
+                    evT.push(int(str.tonumber(f.get(1))) * 1000)
+                    evBank.push(i)
+                    float r = str.tonumber(f.get(2))
+                    evRate.push(r / 100)
+                    evChg.push(f.size() >= 4 ? str.tonumber(f.get(3)) : na)
+    sorted := evT.sort_indices(order.ascending)
+    while ptr < sorted.size() and evT.get(sorted.get(ptr)) < time
+        ptr += 1
+
+int cutoffT = timestamp("UTC", year(timenow, "UTC") - yearsIn, month(timenow, "UTC"), dayofmonth(timenow, "UTC"), 0, 0)
+int barEnd = na(time_close) ? time + timeframe.in_seconds() * 1000 : time_close
+float atr = ta.atr(14)
+
+// ---- Past decisions: a label on the bar where each one happened ----
+string txtUp = ""
+string tipUp = ""
+color colUp = na
+string txtDn = ""
+string tipDn = ""
+color colDn = na
+while ptr < sorted.size()
+    int k = sorted.get(ptr)
+    int t = evT.get(k)
+    if t >= barEnd or t > timenow
+        break
+    ptr += 1
+    if t >= cutoffT
+        int b = evBank.get(k)
+        float r = evRate.get(k)
+        float c = evChg.get(k)
+        string word = "Decided"
+        string verb = "decided; the result is not in this copy of the data: update the indicator"
+        color col = colHold
+        if evKind.get(k) == "p"
+            if na(c) or c == 0
+                word := "Hold\n" + fmtRate(r, b)
+                verb := "held at " + fmtRate(r, b)
+            else if c > 0
+                word := "Hike " + str.tostring(c) + " bp\n" + fmtRate(r, b)
+                verb := "raised " + str.tostring(c) + " bp to " + fmtRate(r, b)
+                col := colHike
+            else
+                word := "Cut " + str.tostring(-c) + " bp\n" + fmtRate(r, b)
+                verb := "cut " + str.tostring(-c) + " bp to " + fmtRate(r, b)
+                col := colCut
+        string txt = BANK_SHORT.get(b) + "\n" + word
+        string tip = BANK_NAME.get(b) + ", " + fmtUtc(t) + ": " + verb + "."
+        if isAbove(b)
+            txtUp := txtUp == "" ? txt : txtUp + "\n\n" + txt
+            tipUp := tipUp == "" ? tip : tipUp + "\n" + tip
+            colUp := na(colUp) ? col : colUp
+        else
+            txtDn := txtDn == "" ? txt : txtDn + "\n\n" + txt
+            tipDn := tipDn == "" ? tip : tipDn + "\n" + tip
+            colDn := na(colDn) ? col : colDn
+
+if txtUp != ""
+    label.new(bar_index, high, txtUp, yloc = yloc.abovebar, color = colUp, style = label.style_label_down, textcolor = colText, size = labelSize(), tooltip = tipUp)
+if txtDn != ""
+    label.new(bar_index, low, txtDn, yloc = yloc.belowbar, color = colDn, style = label.style_label_up, textcolor = colText, size = labelSize(), tooltip = tipDn)
+if showLines and (txtUp != "" or txtDn != "")
+    line.new(bar_index, low, bar_index, high, extend = extend.both, color = color.new(na(colUp) ? colDn : colUp, 60), style = line.style_dotted)
+
+// ---- Decisions to come: labels at their time, a countdown, the table ----
+var array<label> nextLabels = array.new<label>()
+var array<line> nextLines = array.new<line>()
+var table tbl = table.new(tablePos(), 4, N_BANKS + 3, bgcolor = color.new(#161b22, 10), frame_color = color.new(#768390, 50), frame_width = 1, border_color = color.new(#768390, 80), border_width = 1)
+var int soonest = na
+
+if barstate.islast
+    for l in nextLabels
+        label.delete(l)
+    nextLabels.clear()
+    for l in nextLines
+        line.delete(l)
+    nextLines.clear()
+
+    array<int> shownCount = array.new<int>(N_BANKS, 0)
+    array<int> nextT = array.new<int>(N_BANKS, na)
+    array<string> nextKind = array.new<string>(N_BANKS, "")
+    array<float> rateNow = array.new<float>(N_BANKS, na)
+    soonest := na
+    for k in sorted
+        int t = evT.get(k)
+        int b = evBank.get(k)
+        if t <= timenow
+            if evKind.get(k) == "p"
+                rateNow.set(b, evRate.get(k))
+        else
+            if na(nextT.get(b))
+                nextT.set(b, t)
+                nextKind.set(b, evKind.get(k))
+                if na(rateNow.get(b))
+                    rateNow.set(b, evRate.get(k))
+                soonest := na(soonest) ? t : math.min(soonest, t)
+            if showNext and shownCount.get(b) < nextPerBank
+                shownCount.set(b, shownCount.get(b) + 1)
+                bool up = isAbove(b)
+                string txt = BANK_SHORT.get(b) + "\n" + countdown(t - timenow) + (evKind.get(k) == "t" ? "\n(provisional)" : "")
+                string tip = BANK_NAME.get(b) + " decision, " + fmtUtc(t) + (evKind.get(k) == "t" ? " (the date or time is provisional)" : "") + ". Rate before: " + fmtRate(evRate.get(k), b) + "."
+                float y = up ? high + atr * 1.5 : low - atr * 1.5
+                nextLabels.push(label.new(t, y, txt, xloc = xloc.bar_time, color = colNext, style = up ? label.style_label_down : label.style_label_up, textcolor = colText, size = labelSize(), tooltip = tip))
+                if showLines
+                    nextLines.push(line.new(t, low, t, high, xloc = xloc.bar_time, extend = extend.both, color = color.new(colNext, 50), style = line.style_dashed))
+
+    if showTable
+        table.clear(tbl, 0, 0, 3, N_BANKS + 2)
+        color head = color.new(#768390, 0)
+        table.cell(tbl, 0, 0, "Bank", text_color = head, text_size = labelSize(), text_halign = text.align_left)
+        table.cell(tbl, 1, 0, "Rate", text_color = head, text_size = labelSize())
+        table.cell(tbl, 2, 0, "Next decision", text_color = head, text_size = labelSize())
+        table.cell(tbl, 3, 0, "", text_color = head, text_size = labelSize())
+        int row = 1
+        for i = 0 to N_BANKS - 1
+            if bankShown(i)
+                int t = nextT.get(i)
+                string when = na(t) ? "Not in this copy: update" : str.format_time(t, "dd MMM yyyy HH:mm", "UTC") + " UTC" + (nextKind.get(i) == "t" ? "*" : "")
+                table.cell(tbl, 0, row, BANK_SHORT.get(i), text_color = colText, text_size = labelSize(), text_halign = text.align_left)
+                table.cell(tbl, 1, row, fmtRate(rateNow.get(i), i), text_color = colText, text_size = labelSize())
+                table.cell(tbl, 2, row, when, text_color = colText, text_size = labelSize())
+                table.cell(tbl, 3, row, na(t) ? "" : countdown(t - timenow), text_color = colNext, text_size = labelSize())
+                row += 1
+        string foot = row == 1 ? "No bank for " + syminfo.basecurrency + "/" + syminfo.currency + ": set Banks to show to \"" + MODE_ALL + "\"" : "Data as of " + DATA_AS_OF + (array.includes(nextKind, "t") ? "  * provisional" : "")
+        table.cell(tbl, 2, row, foot, text_color = head, text_size = size.tiny)
+
+bool soon = barstate.islast and not na(soonest) and soonest - timenow <= 3600000
+alertcondition(soon, "Decision within the hour", "A central bank decision for this chart's currencies is less than an hour away.")

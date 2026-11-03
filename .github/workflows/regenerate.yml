@@ -1,0 +1,78 @@
+name: Regenerate the indicator
+
+# Every day: rebuild central-bank-decisions.pine and the README's table from
+# InterestRateDecision.com's open data, and commit them when a decision, a date
+# or a rate changed (a change of the "as of" date alone is not committed).
+# On the 1st of each month: also open an issue reminding the owner to
+# republish the script on TradingView (docs/republish.md), as TradingView has
+# no publishing API.
+
+on:
+  schedule:
+    - cron: '17 6 * * *'
+    - cron: '23 7 1 * *'
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: ['src/**', 'scripts/**', 'tests/**']
+
+permissions:
+  contents: write
+  issues: write
+
+concurrency:
+  group: regenerate
+  cancel-in-progress: false
+
+jobs:
+  regenerate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Test the generator
+        run: node --test tests/generate.test.mjs
+      - name: Regenerate from the live data
+        run: node scripts/generate.mjs
+      - name: Commit what changed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          if git diff --quiet; then
+            echo "Nothing new"
+          else
+            git add central-bank-decisions.pine README.md
+            git commit -m "Data: $(date -u +%Y-%m-%d)"
+            git push
+          fi
+
+  remind:
+    needs: regenerate
+    if: github.event.schedule == '23 7 1 * *'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - name: Open the monthly republish issue
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          month="$(date -u +'%B %Y')"
+          title="Republish on TradingView: $month"
+          if gh issue list --state open --search "in:title \"$title\"" --json number --jq 'length' | grep -qv '^0$'; then
+            echo "Already open"; exit 0
+          fi
+          {
+            echo "The script in \`central-bank-decisions.pine\` was regenerated on $(git log -1 --format=%cs -- central-bank-decisions.pine)."
+            echo
+            echo "Steps (five minutes): [docs/republish.md]($GITHUB_SERVER_URL/$GITHUB_REPOSITORY/blob/main/docs/republish.md)"
+            echo
+            echo "- [ ] Copy \`central-bank-decisions.pine\` into the Pine Editor of the published script"
+            echo "- [ ] Save, check a EURUSD chart (past labels, countdowns, table)"
+            echo "- [ ] Publish the update with the release note from docs/republish.md"
+            echo "- [ ] Close this issue"
+          } > body.md
+          gh issue create --title "$title" --body-file body.md
