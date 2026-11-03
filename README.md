@@ -16,7 +16,7 @@ Ten banks: the Federal Reserve (USD), European Central Bank (EUR), Bank of Engla
 
 ## Use it
 
-1. **From TradingView**: search the Indicators menu for "Central Bank Decisions" and add it.
+1. **From TradingView**: open [Central Bank Decisions](https://www.tradingview.com/script/PFtlRPE4-Central-Bank-Decisions/) and click "Add to favorites", or search the Indicators menu for "Central Bank Decisions".
 2. **From this repository**: open the Pine Editor, paste [`central-bank-decisions.pine`](central-bank-decisions.pine), and click "Add to chart".
 
 ### Settings
@@ -55,10 +55,11 @@ As of 2026-11-03. Times in UTC; the indicator shows them with a countdown.
 
 | Decision | Time (UTC) | Rate before |
 | --- | --- | --- |
+| [RBA November 2026](https://interestratedecision.com/rba/november-2026/?via=tv-decisions) | 2026-11-03 03:30 | 4.60% |
 | [Riksbank November 2026](https://interestratedecision.com/riksbank/november-2026/?via=tv-decisions) | 2026-11-04 08:30 | 1.75% |
 | [Norges Bank November 2026](https://interestratedecision.com/norges/november-2026/?via=tv-decisions) | 2026-11-05 09:00 | 4.50% |
 | [BoE November 2026](https://interestratedecision.com/boe/november-2026/?via=tv-decisions) | 2026-11-05 12:00 | 3.75% |
-| [RBA December 2026](https://interestratedecision.com/rba/december-2026/?via=tv-decisions) | 2026-12-08 03:30 | 4.85% |
+| [RBA December 2026](https://interestratedecision.com/rba/december-2026/?via=tv-decisions) | 2026-12-08 03:30 | 4.60% |
 | [RBNZ December 2026](https://interestratedecision.com/rbnz/december-2026/?via=tv-decisions) | 2026-12-09 01:00 | 2.75% |
 | [BoC December 2026](https://interestratedecision.com/boc/december-2026/?via=tv-decisions) | 2026-12-09 14:45 | 2.50% |
 | [Fed December 2026](https://interestratedecision.com/fed/december-2026/?via=tv-decisions) | 2026-12-09 19:00 | 3.75–4.00% |
@@ -66,7 +67,6 @@ As of 2026-11-03. Times in UTC; the indicator shows them with a countdown.
 | [Riksbank December 2026](https://interestratedecision.com/riksbank/december-2026/?via=tv-decisions) | 2026-12-16 08:30 | 1.75% |
 | [Norges Bank December 2026](https://interestratedecision.com/norges/december-2026/?via=tv-decisions) | 2026-12-17 09:00 | 4.50% |
 | [BoE December 2026](https://interestratedecision.com/boe/december-2026/?via=tv-decisions) | 2026-12-17 12:00 | 3.75% |
-| [ECB December 2026](https://interestratedecision.com/ecb/december-2026/?via=tv-decisions) | 2026-12-17 13:15 | 2.50% |
 
 Every date: [the central bank calendar](https://interestratedecision.com/calendar/?via=tv-decisions).
 <!-- next:end -->
