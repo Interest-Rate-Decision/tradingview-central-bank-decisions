@@ -55,11 +55,10 @@ As of 2026-11-03. Times in UTC; the indicator shows them with a countdown.
 
 | Decision | Time (UTC) | Rate before |
 | --- | --- | --- |
-| [RBA November 2026](https://interestratedecision.com/rba/november-2026/?via=tv-decisions) | 2026-11-03 03:30 | 4.60% |
 | [Riksbank November 2026](https://interestratedecision.com/riksbank/november-2026/?via=tv-decisions) | 2026-11-04 08:30 | 1.75% |
 | [Norges Bank November 2026](https://interestratedecision.com/norges/november-2026/?via=tv-decisions) | 2026-11-05 09:00 | 4.50% |
 | [BoE November 2026](https://interestratedecision.com/boe/november-2026/?via=tv-decisions) | 2026-11-05 12:00 | 3.75% |
-| [RBA December 2026](https://interestratedecision.com/rba/december-2026/?via=tv-decisions) | 2026-12-08 03:30 | 4.60% |
+| [RBA December 2026](https://interestratedecision.com/rba/december-2026/?via=tv-decisions) | 2026-12-08 03:30 | 4.85% |
 | [RBNZ December 2026](https://interestratedecision.com/rbnz/december-2026/?via=tv-decisions) | 2026-12-09 01:00 | 2.75% |
 | [BoC December 2026](https://interestratedecision.com/boc/december-2026/?via=tv-decisions) | 2026-12-09 14:45 | 2.50% |
 | [Fed December 2026](https://interestratedecision.com/fed/december-2026/?via=tv-decisions) | 2026-12-09 19:00 | 3.75–4.00% |
@@ -67,6 +66,7 @@ As of 2026-11-03. Times in UTC; the indicator shows them with a countdown.
 | [Riksbank December 2026](https://interestratedecision.com/riksbank/december-2026/?via=tv-decisions) | 2026-12-16 08:30 | 1.75% |
 | [Norges Bank December 2026](https://interestratedecision.com/norges/december-2026/?via=tv-decisions) | 2026-12-17 09:00 | 4.50% |
 | [BoE December 2026](https://interestratedecision.com/boe/december-2026/?via=tv-decisions) | 2026-12-17 12:00 | 3.75% |
+| [ECB December 2026](https://interestratedecision.com/ecb/december-2026/?via=tv-decisions) | 2026-12-17 13:15 | 2.50% |
 
 Every date: [the central bank calendar](https://interestratedecision.com/calendar/?via=tv-decisions).
 <!-- next:end -->
