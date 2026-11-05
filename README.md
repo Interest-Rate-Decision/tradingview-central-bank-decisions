@@ -51,12 +51,10 @@ Its limits:
 ## Next decisions
 
 <!-- next:start -->
-As of 2026-11-04. Times in UTC; the indicator shows them with a countdown.
+As of 2026-11-05. Times in UTC; the indicator shows them with a countdown.
 
 | Decision | Time (UTC) | Rate before |
 | --- | --- | --- |
-| [Norges Bank November 2026](https://interestratedecision.com/norges/november-2026/?via=tv-decisions) | 2026-11-05 09:00 | 4.50% |
-| [BoE November 2026](https://interestratedecision.com/boe/november-2026/?via=tv-decisions) | 2026-11-05 12:00 | 3.75% |
 | [RBA December 2026](https://interestratedecision.com/rba/december-2026/?via=tv-decisions) | 2026-12-08 03:30 | 4.85% |
 | [RBNZ December 2026](https://interestratedecision.com/rbnz/december-2026/?via=tv-decisions) | 2026-12-09 01:00 | 2.75% |
 | [BoC December 2026](https://interestratedecision.com/boc/december-2026/?via=tv-decisions) | 2026-12-09 14:45 | 2.50% |
@@ -64,9 +62,11 @@ As of 2026-11-04. Times in UTC; the indicator shows them with a countdown.
 | [SNB December 2026](https://interestratedecision.com/snb/december-2026/?via=tv-decisions) | 2026-12-10 08:30 | 0.00% |
 | [Riksbank December 2026](https://interestratedecision.com/riksbank/december-2026/?via=tv-decisions) | 2026-12-16 08:30 | 2.00% |
 | [Norges Bank December 2026](https://interestratedecision.com/norges/december-2026/?via=tv-decisions) | 2026-12-17 09:00 | 4.50% |
-| [BoE December 2026](https://interestratedecision.com/boe/december-2026/?via=tv-decisions) | 2026-12-17 12:00 | 3.75% |
+| [BoE December 2026](https://interestratedecision.com/boe/december-2026/?via=tv-decisions) | 2026-12-17 12:00 | 4.00% |
 | [ECB December 2026](https://interestratedecision.com/ecb/december-2026/?via=tv-decisions) | 2026-12-17 13:15 | 2.50% |
 | [BoJ December 2026](https://interestratedecision.com/boj/december-2026/?via=tv-decisions) | 2026-12-18 03:00 (provisional) | 1.25% |
+| [BoJ January 2027](https://interestratedecision.com/boj/january-2027/?via=tv-decisions) | 2027-01-22 03:00 (provisional) | 1.25% |
+| [BoC January 2027](https://interestratedecision.com/boc/january-2027/?via=tv-decisions) | 2027-01-27 14:45 | 2.50% |
 
 Every date: [the central bank calendar](https://interestratedecision.com/calendar/?via=tv-decisions).
 <!-- next:end -->
